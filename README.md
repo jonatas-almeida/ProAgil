@@ -1,3 +1,3 @@
 ## ProAgil - Eventos
 
-Plataforma criada para promover eventos
+Plataforma de promover eventos do tipo workshops, treinamento de empresas, encontros de sobre tecnologia e negócios, etc.
