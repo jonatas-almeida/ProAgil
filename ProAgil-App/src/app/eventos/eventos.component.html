@@ -1,7 +1,47 @@
-<div *ngFor="let evento of eventos">
-  <h3>Nome do Evento: {{evento.tema}}</h3>
-  <p>Local: {{evento.local}}</p>
-  <p>Data: {{evento.dataEvento}}</p>
-  <button class="btn btn-primary btn-lg">Detalhes</button>
-  <hr>
-</div>
+<form class="form-inline">
+  <div class="form-group mb-2">
+    <input type="text" class="form-control mr-2" placeholder="Buscar">
+    <button class="btn btn-outline-success">Buscar</button>
+  </div>
+</form>
+<table class="table table-striped">
+  <thead class="thead-light">
+    <tr>
+      <th>
+        <button class="btn btn-outline-primary" (click)="alternarImagem()">
+          Mostrar imagem
+        </button>
+      </th>
+      <th>#</th>
+      <th>Tema</th>
+      <th>Local</th>
+      <th>Data</th>
+      <th>Qtd Pessoas</th>
+      <th>Lote</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventos && eventos.length">
+    <!--A diretiva ngIf serve tanto para mostrar os itens (ou fazer uma lógica qualquer), quanto pra esconder itens-->
+    <tr *ngFor="let evento of eventos">
+      <!--O ngFor-->
+      <td>
+        <img *ngIf="mostrarImagem" src="http://localhost:5000/img/{{evento.imagemURL}}" [style.width.px]="imagemLargura" [style.margin.px]="imagemMargem" [style.border-radius.px]="imagemBorda">
+      </td>
+      <td>{{evento.eventoId}}</td>
+      <td>{{evento.tema}}</td>
+      <td>{{evento.local}}</td>
+      <td>{{evento.dataEvento}}</td>
+      <td>{{evento.qtdPessoas}}</td>
+      <td>{{evento.lote}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!eventos.length">
+    <tr>
+      <td colspan="7" class="text-center">
+        <h3>Nenhum evento encontrado!</h3>
+      </td>
+    </tr>
+  </tfoot>
+</table>

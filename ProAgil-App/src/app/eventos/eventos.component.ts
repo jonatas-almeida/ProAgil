@@ -8,16 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventosComponent implements OnInit {
 
-  eventos: any;
+  eventos: any = [];
+  imagemLargura = 50;
+  imagemMargem = 2;
+  imagemBorda = 5;
+  mostrarImagem = false;
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.getEventos();
   }
 
+  alternarImagem(){
+    this.mostrarImagem = !this.mostrarImagem;
+  }
+
   getEventos(){
-    this.http.get('http://localhost:5000/api/values').subscribe(response => {
+    this.httpClient.get('http://localhost:5000/api/values').subscribe(response => {
       this.eventos = response;
     }, error => {
       console.log(error);
