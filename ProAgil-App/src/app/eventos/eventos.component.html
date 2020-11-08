@@ -1,9 +1,10 @@
-<form class="form-inline">
-  <div class="form-group mb-2">
-    <input type="text" class="form-control mr-2" placeholder="Buscar">
-    <button class="btn btn-outline-success">Buscar</button>
+<div>
+  <p>Você pode filtrar pelo nome do evento.</p>
+  <div class="form-group form-inline mb-2">
+    <input type="text" class="form-control mr-2" placeholder="Buscar" [(ngModel)]="filtroLista">
   </div>
-</form>
+</div>
+<h3>Filtro: {{filtroLista}}</h3>
 <table class="table table-striped">
   <thead class="thead-light">
     <tr>
@@ -23,7 +24,7 @@
   </thead>
   <tbody *ngIf="eventos && eventos.length">
     <!--A diretiva ngIf serve tanto para mostrar os itens (ou fazer uma lógica qualquer), quanto pra esconder itens-->
-    <tr *ngFor="let evento of eventos">
+    <tr *ngFor="let evento of eventosFiltrados">
       <!--O ngFor-->
       <td>
         <img *ngIf="mostrarImagem" src="http://localhost:5000/img/{{evento.imagemURL}}" [style.width.px]="imagemLargura" [style.margin.px]="imagemMargem" [style.border-radius.px]="imagemBorda">
@@ -33,8 +34,11 @@
       <td>{{evento.local}}</td>
       <td>{{evento.dataEvento}}</td>
       <td>{{evento.qtdPessoas}}</td>
-      <td>{{evento.lote}}</td>
-      <td></td>
+      <td>{{evento.lote | uppercase}}</td>
+      <td>
+        <button class="btn btn-success">Detalhes</button>
+        <button class="btn btn-outline-danger">Excluir</button>
+      </td>
     </tr>
   </tbody>
   <tfoot *ngIf="!eventos.length">
