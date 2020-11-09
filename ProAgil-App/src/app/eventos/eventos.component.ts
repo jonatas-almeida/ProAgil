@@ -20,7 +20,7 @@ export class EventosComponent implements OnInit {
 
   eventosFiltrados: any = [];
   eventos: any = [];
-  //Opções definidas para serem settadas nos property binding das imagens no componente de eventos
+  //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   imagemLargura = 50;
   imagemMargem = 2;
   imagemBorda = 5;
