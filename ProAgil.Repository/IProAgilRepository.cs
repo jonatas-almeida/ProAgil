@@ -3,7 +3,7 @@ using ProAgil.Domain;
 
 namespace ProAgil.Repository
 {
-    public interface IProAgilInterface
+    public interface IProAgilRepository
     {
         //GERAL
          void Add<T>(T entity) where T : class;
@@ -22,8 +22,8 @@ namespace ProAgil.Repository
         Task<Evento> GetEventoAsyncById(int EventoId, bool includePalestrantes);
 
         //PALESTRANTE
-        Task<Evento[]> GetAllPalestrantesAsyncByName(bool includePalestrantes);
+        Task<Palestrante[]> GetAllPalestrantesAsyncByName(string name, bool includeEventos);
 
-        Task<Evento> GetPalestranteAsync(int PalestranteId, bool includePalestrantes);
+        Task<Palestrante> GetPalestranteAsync(int PalestranteId, bool includeEventos);
     }
 }

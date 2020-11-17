@@ -24,7 +24,7 @@
   </thead>
   <tbody *ngIf="eventos && eventos.length">
     <!--A diretiva ngIf serve tanto para mostrar os itens (ou fazer uma lógica qualquer), quanto pra esconder itens-->
-    <tr *ngFor="let evento of eventosFiltrados">
+    <tr *ngFor="let evento of eventos">
       <!--O ngFor-->
       <td>
         <img *ngIf="mostrarImagem" src="http://localhost:5000/img/{{evento.imagemURL}}" [style.width.px]="imagemLargura" [style.margin.px]="imagemMargem" [style.border-radius.px]="imagemBorda">
