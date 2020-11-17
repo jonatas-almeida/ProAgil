@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { EventoService } from '../_services/evento.service';
 
 @Component({
   selector: 'app-eventos',
@@ -27,7 +28,7 @@ export class EventosComponent implements OnInit {
   mostrarImagem = false;
 
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private eventoService: EventoService) { }
 
   ngOnInit() {
     this.getEventos();
@@ -47,7 +48,7 @@ export class EventosComponent implements OnInit {
   }
 
   getEventos(){
-    this.httpClient.get('http://localhost:5000/api/values').subscribe(response => {
+    this.eventoService.getEvento().subscribe(response => {
       this.eventos = response;
     }, error => {
       console.log(error);
