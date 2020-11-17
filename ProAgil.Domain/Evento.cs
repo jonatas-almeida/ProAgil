@@ -25,9 +25,9 @@ namespace ProAgil.Domain
 
         public List<Lote> Lotes { get; set; }
         
-        public List<RedeSocial> RedeSociais { get; set; }
+        public List<RedeSocial> RedesSociais { get; set; }
 
-        public List<PalestranteEvento> PalestranteEventos { get; set; }
+        public List<PalestranteEvento> PalestrantesEventos { get; set; }
 
     }
 }

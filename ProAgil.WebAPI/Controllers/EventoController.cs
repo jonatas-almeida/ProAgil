@@ -8,7 +8,7 @@ namespace ProAgil.WebAPI.Controllers
 {
   //CONTROLLER DOS EVENTOS
   [Route("api/[controller]")]
-  [ApiController]
+  [ApiController]//Retorna erros de validação
   public class EventoController : ControllerBase
   {
     private readonly IProAgilRepository _repo;
