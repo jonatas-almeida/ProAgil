@@ -98,8 +98,6 @@ namespace ProAgil.Repository
 
       return await query.FirstOrDefaultAsync();
     }
-
-
     public async Task<Palestrante[]> GetAllPalestrantesAsyncByName(string name, bool includeEventos = false)
     {
       IQueryable<Palestrante> query = _context.Palestrantes.Include(c => c.RedesSociais);
@@ -112,7 +110,5 @@ namespace ProAgil.Repository
 
       return await query.ToArrayAsync();
     }
-
-
   }
 }

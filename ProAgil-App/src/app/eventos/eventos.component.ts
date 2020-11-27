@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Evento } from '../_models/Evento';
 import { EventoService } from '../_services/evento.service';
 
 @Component({
@@ -19,8 +20,9 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
-  eventosFiltrados: any = [];
-  eventos: any = [];
+  eventosFiltrados: Evento[];
+  eventos: Evento[];
+
   //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   imagemLargura = 50;
   imagemMargem = 2;
@@ -35,7 +37,7 @@ export class EventosComponent implements OnInit {
   }
 
   //Função para filtrar os eventos quando digitado no input de busca
-  filtrarEventos(filtrarPor: string): any{
+  filtrarEventos(filtrarPor: string): Evento[]{
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
       evento => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
@@ -48,8 +50,10 @@ export class EventosComponent implements OnInit {
   }
 
   getEventos(){
-    this.eventoService.getEvento().subscribe(response => {
-      this.eventos = response;
+    this.eventoService.getAllEvento().subscribe(
+      (_eventos: Evento[]) => {
+      this.eventos = _eventos;
+      this.eventosFiltrados = this.eventos;
     }, error => {
       console.log(error);
     }

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Evento } from '../_models/Evento';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,20 @@ export class EventoService {
   constructor(private httpClient: HttpClient) { }
 
 
-  getEvento(){
-    return this.httpClient.get(this.baseURL);
+  //Usando o Observable no método fica mais fácil de especificar qual informação está sendo puxada via Get (no caso aqui se trata do Evento).
+
+  //Lembrando que é necessário especificar o tipo que está sendo passado no Observable no caso do Observable abaixo estamos dizendo que o Evento retorna um array como valor, feito isso é necessário também passar a mesma informação para o método get do HttpClient que puxa a Base URL.
+
+  getAllEvento(): Observable<Evento[]>{
+    return this.httpClient.get<Evento[]>(this.baseURL);
+  }
+
+  getEventoByTema(tema: string): Observable<Evento[]>{
+    return this.httpClient.get<Evento[]>(`${this.baseURL}/getByTema/${tema}`);
+  }
+
+  getEventoById(id: number): Observable<Evento>{
+    return this.httpClient.get<Evento>(`${this.baseURL}/${id}`);
   }
 
 
