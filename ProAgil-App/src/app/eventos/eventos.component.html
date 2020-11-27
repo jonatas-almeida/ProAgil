@@ -43,12 +43,16 @@
         </div>
       </td>
       <td>
-        <button class="btn btn-success">Detalhes</button>
-        <button class="btn btn-outline-danger">Excluir</button>
+        <button class="btn btn-success">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn btn-outline-danger">
+          <i class="fa fa-eraser"></i>
+        </button>
       </td>
     </tr>
   </tbody>
-  <tfoot *ngIf="!eventos.length">
+  <tfoot *ngIf="!eventos">
     <tr>
       <td colspan="7" class="text-center">
         <h3>Nenhum evento encontrado!</h3>
