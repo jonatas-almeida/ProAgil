@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventosComponent } from '../app/eventos/eventos.component';
 import { NavComponent } from '../app/nav/nav.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EventoService } from './_services/evento.service';
 import { DateTimeFormatPìpePipe } from './_helpers/DateTimeFormatPìpe.pipe';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -30,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     EventoService
