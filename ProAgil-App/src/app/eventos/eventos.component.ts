@@ -13,6 +13,9 @@ import { EventoService } from '../_services/evento.service';
 export class EventosComponent implements OnInit {
 
   //Opções definidas para serem settadas no property binding das imagens no componente de eventos
+  eventosFiltrados: Evento[];
+  eventos: Evento[];
+  
   imagemLargura = 50;
   imagemMargem = 2;
   imagemBorda = 5;
@@ -21,13 +24,12 @@ export class EventosComponent implements OnInit {
   registerForm: FormGroup;
 
   _filtroLista: string = '';
-  //Encapsulamento da propriedade _filtroLista
-
-  constructor(private eventoService: EventoService, private modalService: BsModalService) { }
   
 
+  constructor(private eventoService: EventoService, private modalService: BsModalService) { }
 
-  get filtroLista(){
+  //Encapsulamento da propriedade _filtroLista
+  get filtroLista(): string{
     return this._filtroLista;
   }
   set filtroLista(value: string){
@@ -39,8 +41,6 @@ export class EventosComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  eventosFiltrados: Evento[];
-  eventos: Evento[];
 
 
   ngOnInit() {
@@ -65,7 +65,7 @@ export class EventosComponent implements OnInit {
   validation(){
     this.registerForm = new FormGroup({
       tema: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
-      local: new FormControl('', Validators.required),
+      local: new FormControl('', [Validators.required, Validators.maxLength(50)]),
       dataEvento: new FormControl('', Validators.required),
       qtdPessoas: new FormControl('', [Validators.required, Validators.max(120000)]),
       imagemUrl: new FormControl('', Validators.required),
