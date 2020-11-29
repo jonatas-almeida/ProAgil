@@ -1,9 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '../_models/Evento';
 import { EventoService } from '../_services/evento.service';
+import {BsLocaleService} from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { templateJitUrl } from '@angular/compiler';
+
+defineLocale('pt-br', ptBrLocale);
 
 @Component({
   selector: 'app-eventos',
@@ -15,18 +21,22 @@ export class EventosComponent implements OnInit {
   //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   eventosFiltrados: Evento[];
   eventos: Evento[];
-  
+  evento: Evento;
+  modoSalvar = 'post';
+
   imagemLargura = 50;
   imagemMargem = 2;
   imagemBorda = 5;
   mostrarImagem = false;
-  modalRef: BsModalRef;
   registerForm: FormGroup;
 
   _filtroLista: string = '';
-  
 
-  constructor(private eventoService: EventoService, private modalService: BsModalService) { }
+
+  constructor(private eventoService: EventoService, private modalService: BsModalService, private fb: FormBuilder, private localeService: BsLocaleService) {
+
+    this.localeService.use('pt-br');
+  }
 
   //Encapsulamento da propriedade _filtroLista
   get filtroLista(): string{
@@ -37,8 +47,21 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
-  openModal(template: TemplateRef<any>){
-    this.modalRef = this.modalService.show(template);
+  editarEventos(evento: Evento, template: any){
+    this.modoSalvar = 'put';
+    this.openModal(template);
+    this.evento = evento;
+    this.registerForm.patchValue(evento);
+  }
+
+  novoEvento(template: any){
+    this.modoSalvar = 'post';
+    this.openModal(template);
+  }
+
+  openModal(template: any){
+    this.registerForm.reset();
+    template.show();
   }
 
 
@@ -63,21 +86,18 @@ export class EventosComponent implements OnInit {
 
   //Validação de cada input do formulário
   validation(){
-    this.registerForm = new FormGroup({
-      tema: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
-      local: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-      dataEvento: new FormControl('', Validators.required),
-      qtdPessoas: new FormControl('', [Validators.required, Validators.max(120000)]),
-      imagemUrl: new FormControl('', Validators.required),
-      telefone: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
+    this.registerForm = this.fb.group({
+      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      local: ['', [Validators.required, Validators.maxLength(50)]],
+      dataEvento: ['', Validators.required],
+      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
+      imagemUrl: ['', Validators.required],
+      telefone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
-  salvarAlteracao(){
-
-  }
-
+  //Captura os eventos do banco de dados
   getEventos(){
     this.eventoService.getAllEvento().subscribe(
       (_eventos: Evento[]) => {
@@ -88,5 +108,38 @@ export class EventosComponent implements OnInit {
     }
     );
   }
+
+  //Cadastra os eventos no banco de dados
+  salvarAlteracao(template: any){
+    if(this.registerForm.valid){
+      if(this.modoSalvar === 'post'){
+        this.evento = Object.assign({}, this.registerForm.value);
+        this.eventoService.postEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            console.log(novoEvento);
+            template.hide();
+            this.getEventos();
+          }, error =>{
+            console.log(error);
+          }
+        );
+      }
+      else{
+        this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+        this.eventoService.putEvento(this.evento).subscribe(
+          () => {
+            template.hide();
+            this.getEventos();
+          }, error =>{
+            console.log(error);
+          }
+        );
+      }
+
+    }
+  }
+
+  //Altera os eventos no banco de dados
+
 
 }
