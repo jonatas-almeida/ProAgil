@@ -22,6 +22,7 @@ export class EventosComponent implements OnInit {
   eventosFiltrados: Evento[];
   eventos: Evento[];
   evento: Evento;
+  bodyDeletarEvento = '';
   modoSalvar = 'post';
 
   imagemLargura = 50;
@@ -47,6 +48,13 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
+  //Método de adicionar eventos
+  novoEvento(template: any){
+    this.modoSalvar = 'post';
+    this.openModal(template);
+  }
+
+  //Método de editar eventos
   editarEventos(evento: Evento, template: any){
     this.modoSalvar = 'put';
     this.openModal(template);
@@ -54,16 +62,31 @@ export class EventosComponent implements OnInit {
     this.registerForm.patchValue(evento);
   }
 
-  novoEvento(template: any){
-    this.modoSalvar = 'post';
+  //Método de exlcuir eventos
+  excluirEvento(evento: Evento, template: any){
     this.openModal(template);
+    this.evento = evento;
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}`
   }
 
+  //Método para confirmar a exclusão do evento
+  confirmeDelete(template: any){
+    this.eventoService.deleteEvento(this.evento.id).subscribe(
+      () => {
+        template.hide();
+        this.getEventos();
+      }, error => {
+        console.log(error);
+      }
+    )
+  }
+
+
+  //Abrir modal
   openModal(template: any){
     this.registerForm.reset();
     template.show();
   }
-
 
 
   ngOnInit() {

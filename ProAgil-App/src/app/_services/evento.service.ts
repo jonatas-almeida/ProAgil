@@ -37,5 +37,9 @@ export class EventoService {
     return this.httpClient.put(`${this.baseURL}/${evento.id}`, evento);
   }
 
+  deleteEvento(id: number){
+    return this.httpClient.delete(`${this.baseURL}/${id}`);
+  }
+
 
 }
