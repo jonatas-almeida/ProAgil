@@ -125,6 +125,7 @@ export class EventosComponent implements OnInit {
         );
       }
       else{
+        //Altera os eventos no banco de dados
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
         this.eventoService.putEvento(this.evento).subscribe(
           () => {
@@ -138,8 +139,6 @@ export class EventosComponent implements OnInit {
 
     }
   }
-
-  //Altera os eventos no banco de dados
 
 
 }

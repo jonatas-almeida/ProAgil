@@ -90,7 +90,7 @@ namespace ProAgil.WebAPI.Controllers
     }
 
     //Função de Update
-    [HttpPut]
+    [HttpPut("{EventoId}")]
     public async Task<IActionResult> Put(int EventoId, Evento model)
     {
       try
