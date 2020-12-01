@@ -38,6 +38,8 @@ namespace ProAgil.Repository
 
 
     //EVENTO
+
+    //Pesquisa todos
     public async Task<Evento[]> GetAllEventoAsync(bool includePalestrantes = false)//Esse parâmetro se torna opcional quando adicionado o valor booleano, fica ao critério do usuário 
     {
       //Faz uma query para puxar os palestrantes e ao mesmo tempo puxa Lotes e Redes Sociais
@@ -49,7 +51,7 @@ namespace ProAgil.Repository
         query = query.Include(pe => pe.PalestrantesEventos).ThenInclude(p => p.Palestrante);
       }
 
-      query = query.AsNoTracking().OrderByDescending(c => c.DataEvento);
+      query = query.AsNoTracking().OrderBy(c => c.Id);
 
       return await query.ToArrayAsync();
     }
@@ -69,6 +71,7 @@ namespace ProAgil.Repository
       return await query.ToArrayAsync();
     }
 
+    //Pesquisa por ID
     public async Task<Evento> GetEventoAsyncById(int EventoId, bool includePalestrantes)
     {
       IQueryable<Evento> query = _context.Eventos.Include(c => c.Lotes).Include(c => c.RedesSociais);
