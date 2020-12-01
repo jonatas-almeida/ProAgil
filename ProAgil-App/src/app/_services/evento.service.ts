@@ -17,6 +17,7 @@ export class EventoService {
 
   //Lembrando que é necessário especificar o tipo que está sendo passado no Observable no caso do Observable abaixo estamos dizendo que o Evento retorna um array como valor, feito isso é necessário também passar a mesma informação para o método get do HttpClient que puxa a Base URL.
 
+  //Método get
   getAllEvento(): Observable<Evento[]>{
     return this.httpClient.get<Evento[]>(this.baseURL);
   }

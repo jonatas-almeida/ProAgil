@@ -66,7 +66,8 @@ export class EventosComponent implements OnInit {
   excluirEvento(evento: Evento, template: any){
     this.openModal(template);
     this.evento = evento;
-    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}`
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}` //Adiciona o valor de string para criar uma mensagem personalizada que aparecerá no modal de deletar evento
+
   }
 
   //Método para confirmar a exclusão do evento
@@ -133,6 +134,7 @@ export class EventosComponent implements OnInit {
   }
 
   //Cadastra os eventos no banco de dados
+  //Nesse método é possível 
   salvarAlteracao(template: any){
     if(this.registerForm.valid){
       if(this.modoSalvar === 'post'){
