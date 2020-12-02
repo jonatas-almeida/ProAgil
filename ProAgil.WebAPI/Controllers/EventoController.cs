@@ -14,9 +14,14 @@ namespace ProAgil.WebAPI.Controllers
   [ApiController]//Retorna erros de validação
   public class EventoController : ControllerBase
   {
+    //Instância do Repositório
     private readonly IProAgilRepository _repo;
+
+    //Instância do Mapeamento 
     private readonly IMapper _mapper;
 
+
+    //Construtor da Controller
     public EventoController(IProAgilRepository repo, IMapper mapper)
     {
       _mapper = mapper;
@@ -30,6 +35,7 @@ namespace ProAgil.WebAPI.Controllers
       try
       {
         var eventos = await _repo.GetAllEventoAsync(true);
+        //Pega os valores específicos do EventoDto, já que ele está sendo passado como parâmetro no método Map. No caso em questão, ele retorna um array de valores json 
         var results = _mapper.Map<EventoDto[]>(eventos);
         return Ok(results);
       }
@@ -47,6 +53,7 @@ namespace ProAgil.WebAPI.Controllers
       {
         var evento = await _repo.GetEventoAsyncById(EventoId, true);
 
+        //Aqui também é usado o EventoDto, porém aqui não é necessário usar um array porque aqui só é retornado um valor, o ID do evento
         var results = _mapper.Map<EventoDto>(evento);
 
         return Ok(results);
@@ -82,8 +89,10 @@ namespace ProAgil.WebAPI.Controllers
     {
       try
       {
+        //Aqui é passado no método Map a classe de eventos em que será realizada ação do método Post. Aqui ocorre um mapeamento da classe Evento para que possa ser atribuído aos respectivos campos no Banco de Dados.
 
-          var evento = _mapper.Map<Evento>(model);
+        //Com o mapeamento fica mais simples de definir o que será alterado, adicionado ou excluído do banco de dados
+        var evento = _mapper.Map<Evento>(model);
 
         _repo.Add(evento); //Mudança de estado
 
@@ -102,6 +111,8 @@ namespace ProAgil.WebAPI.Controllers
     }
 
     //Função de Update
+    //--------------------------------------------------
+    //Recebe o id do evento como parâmetro para que quando o botão de editar seja clicado, ele receba o id do evento em questão e faça com que assim possa ser realizada a função de update no banco de dados
     [HttpPut("{EventoId}")]
     public async Task<IActionResult> Put(int EventoId, Evento model)
     {
@@ -133,6 +144,8 @@ namespace ProAgil.WebAPI.Controllers
 
 
     //Função Delete
+    //------------------------------------------------------------
+    //Recebe como parâmetro o id do evento em questão, esse id será usado para excluir um evento específico e suas informações
     [HttpDelete("{EventoId}")]
     public async Task<IActionResult> Delete(int EventoId)
     {

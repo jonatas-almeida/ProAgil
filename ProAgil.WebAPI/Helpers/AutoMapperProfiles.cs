@@ -12,6 +12,8 @@ namespace ProAgil.WebAPI.Helpers
             //Referenciando as classes que irão ser utilizadas pelo AutoMapper
 
             //O mapeamento serve para referenciarmos com mais "segurança" qual objeto está sendo consumido da API. É necessário esse referênciamento porque ele é de muitos pra muitos, então é necessário especificar o que queremos pegar de informações importantes.
+
+            //É usado o ReverseMap para que o mapeamento seja feito por completo
             CreateMap<Evento, EventoDto>().ForMember(dest => dest.Palestrantes, opt => {
                 opt.MapFrom(src => src.PalestrantesEventos.Select(x => x.Palestrante).ToList());
             }).ReverseMap();
