@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,7 +18,7 @@ namespace ProAgil.WebAPI.DTOs
         public string Local { get; set; }
 
         [Required (ErrorMessage="A data do evento deve ser definida")]
-        public string DataEvento { get; set; }
+        public DateTime DataEvento { get; set; }
 
         [Required (ErrorMessage="O tema deve ser preenchido")]
         public string Tema { get; set; }
@@ -25,7 +26,6 @@ namespace ProAgil.WebAPI.DTOs
         [Range (2, 12000, ErrorMessage="Quantidade de pessoas é entre 2 e 120.000")]
         public int QtdPessoas { get; set; }
 
-        [Required (ErrorMessage="O nome do lote deve ser preenchido")]
         public string Lote { get; set; }
 
         [Phone]

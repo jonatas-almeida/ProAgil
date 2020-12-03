@@ -114,7 +114,17 @@
             </div>
             <div class="form-group col-md-4">
               <label>Data e Hora</label>
-              <input [ngClass]="{'is-invalid' : registerForm.get('dataEvento').errors && registerForm.get('dataEvento').touched}" type="text" class="form-control" formControlName="dataEvento" placeholder="Insira a data do evento" bsDatepicker [bsConfig]="{dateInputFormat : 'DD/MM/YYYY hh:mm a'}">
+              <input
+              [(ngModel)]='dataEvento'
+              value="{{dataEvento | DateTimeFormatPipe}}"
+              [ngClass]="{'is-invalid' : registerForm.get('dataEvento').errors && registerForm.get('dataEvento').touched}"
+              type="text" class="form-control"
+              formControlName="dataEvento"
+              placeholder="Insira a data do evento"
+              bsDatepicker
+              [bsConfig]="{dateInputFormat : 'dd/MM/yyyy hh:mm a'}"
+
+              />
               <div *ngIf="registerForm.get('dataEvento').hasError('required') && registerForm.get('dataEvento').touched" class="invalid-feedback">
                 A data do evento é obrigatório
               </div>

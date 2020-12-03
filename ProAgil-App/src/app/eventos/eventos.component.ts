@@ -7,7 +7,8 @@ import { EventoService } from '../_services/evento.service';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
-import { templateJitUrl } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
+import {DatePipe} from '@angular/common';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -20,6 +21,7 @@ export class EventosComponent implements OnInit {
 
   //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   eventosFiltrados: Evento[];
+  dataEvento: Date;
   eventos: Evento[];
   evento: Evento;
   bodyDeletarEvento = '';
@@ -34,7 +36,13 @@ export class EventosComponent implements OnInit {
   _filtroLista: string = '';
 
 
-  constructor(private eventoService: EventoService, private modalService: BsModalService, private fb: FormBuilder, private localeService: BsLocaleService) {
+  constructor(
+    private eventoService: EventoService,
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private localeService: BsLocaleService,
+    private toastr: ToastrService,
+    private datePipe: DatePipe) {
 
     this.localeService.use('pt-br');
   }
@@ -76,8 +84,10 @@ export class EventosComponent implements OnInit {
       () => {
         template.hide();
         this.getEventos();
+        this.toastr.success('Evento deletado com sucesso!');
       }, error => {
         console.log(error);
+        this.toastr.error(`Não foi possível excluir o evento: ${error}`);
       }
     )
   }
@@ -128,13 +138,13 @@ export class EventosComponent implements OnInit {
       this.eventos = _eventos;
       this.eventosFiltrados = this.eventos;
     }, error => {
-      console.log(error);
+      this.toastr.error(`Erro ao tentar carregar eventos: ${error}`);
     }
     );
   }
 
   //Cadastra os eventos no banco de dados
-  //Nesse método é possível 
+  //Nesse método é possível
   salvarAlteracao(template: any){
     if(this.registerForm.valid){
       if(this.modoSalvar === 'post'){
@@ -144,8 +154,10 @@ export class EventosComponent implements OnInit {
             console.log(novoEvento);
             template.hide();
             this.getEventos();
+            this.toastr.success('Evento criado com sucesso!');
           }, error =>{
             console.log(error);
+            this.toastr.error(`Não foi possível criar o evento: ${error}`);
           }
         );
       }
@@ -156,7 +168,9 @@ export class EventosComponent implements OnInit {
           () => {
             template.hide();
             this.getEventos();
+            this.toastr.success('Evento editado com sucesso!');
           }, error =>{
+            this.toastr.error(`Não foi possível criar o evento: ${error}`);
             console.log(error);
           }
         );
