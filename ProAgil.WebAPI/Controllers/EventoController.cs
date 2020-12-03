@@ -80,6 +80,7 @@ namespace ProAgil.WebAPI.Controllers
     }
 
 
+
     //FUNÇÕES DA CONTROLLER
     //-----------------------------------------------------------------------------------
 
@@ -87,6 +88,8 @@ namespace ProAgil.WebAPI.Controllers
     [HttpPost]
     public async Task<IActionResult> Post(EventoDto model)
     {
+
+
       try
       {
         //Aqui é passado no método Map a classe de eventos em que será realizada ação do método Post. Aqui ocorre um mapeamento da classe Evento para que possa ser atribuído aos respectivos campos no Banco de Dados.
@@ -99,7 +102,7 @@ namespace ProAgil.WebAPI.Controllers
         if (await _repo.SaveChangesAsync())
         {
           //Salva todas as mudanças de estado
-          return Created($"/api/evento/{model.Id}", model);
+          return Created($"/api/evento/{model.Id}", _mapper.Map<EventoDto>(evento));//Toda vez que o Método Post for acionado o evento passado como parâmetro será retornado realizando o match com o DTO
         }
       }
       catch (System.Exception)
@@ -110,28 +113,29 @@ namespace ProAgil.WebAPI.Controllers
       return BadRequest();//Se não conseguir fazer o post, ele retorna um Bad Request
     }
 
+
+
+
+
     //Função de Update
     //--------------------------------------------------
     //Recebe o id do evento como parâmetro para que quando o botão de editar seja clicado, ele receba o id do evento em questão e faça com que assim possa ser realizada a função de update no banco de dados
     [HttpPut("{EventoId}")]
-    public async Task<IActionResult> Put(int EventoId, Evento model)
+    public async Task<IActionResult> Put(int EventoId, EventoDto model)
     {
       try
       {
         var evento = await _repo.GetEventoAsyncById(EventoId, false);//Esperar para retornar o Evento
+        if(evento == null) return NotFound();//Se não encontrar um evento ele retorna um NotFound()
 
-        //Se não encontrar um evento ele retorna um NotFound()
-        if (evento == null)
-        {
-          return NotFound();
-        }
+        _mapper.Map(model, evento);
 
-        _repo.Update(model); //Mudança de estado
+        _repo.Update(evento); //Mudança de estado
 
         if (await _repo.SaveChangesAsync())
         {
           //Salva todas as mudanças de estado
-          return Created($"/api/evento/{model.Id}", model);
+          return Created($"/api/evento/{model.Id}", _mapper.Map<EventoDto>(evento));//Da mesma forma que o método Post, ele retornará o evento passado como parâmetro fazendo match com o DTO
         }
       }
       catch (System.Exception)
