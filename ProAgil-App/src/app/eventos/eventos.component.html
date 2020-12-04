@@ -37,7 +37,7 @@
     <tr *ngFor="let evento of eventosFiltrados">
       <!--O ngFor-->
       <td>
-        <img *ngIf="mostrarImagem" src="http://localhost:5000/img/{{evento.imagemURL}}" [style.width.px]="imagemLargura" [style.margin.px]="imagemMargem" [style.border-radius.px]="imagemBorda">
+        <img *ngIf="mostrarImagem" src="http://localhost:5000/resources/images/{{evento.imagemURL}}" [style.width.px]="imagemLargura" [style.margin.px]="imagemMargem" [style.border-radius.px]="imagemBorda">
       </td>
       <td>{{evento.id}}</td>
       <td>{{evento.tema}}</td>
@@ -141,8 +141,15 @@
             </div>
             <div class="form-group col-md-9">
               <label>Imagem</label>
-              <input type="text" [ngClass]="{'is-invalid' : registerForm.get('imagemUrl').errors && registerForm.get('imagemUrl').touched}" class="form-control" formControlName="imagemUrl" placeholder="Insira a imagem">
-              <div *ngIf="registerForm.get('imagemUrl').hasError('required') && registerForm.get('imagemUrl').touched" class="invalid-feedback">
+              <table>
+                <tr>
+                  <td>
+                    <button class="btn btn-primary" (click)="file.click()">Enviar imagem</button>
+                    <input type="file" #file [ngClass]="{'is-invalid' : registerForm.get('imagemURL').errors && registerForm.get('imagemURL').touched}" class="form-control" formControlName="imagemURL" placeholder="Insira a imagem" (change)="onFileChange($event)" style="display: none;">
+                  </td>
+                </tr>
+              </table>
+              <div *ngIf="registerForm.get('imagemURL').hasError('required') && registerForm.get('imagemURL').touched" class="invalid-feedback">
                 Uma imagem é obrigatória
               </div>
             </div>

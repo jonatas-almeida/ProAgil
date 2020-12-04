@@ -9,6 +9,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { ToastrService } from 'ngx-toastr';
 import {DatePipe} from '@angular/common';
+import { FileStats } from '@angular/compiler-cli/src/ngtsc/file_system';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -27,13 +28,14 @@ export class EventosComponent implements OnInit {
   evento: Evento;
   bodyDeletarEvento = '';
   modoSalvar = 'post';
+  file: File;
+  registerForm: FormGroup;
 
   //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   imagemLargura = 50;
   imagemMargem = 2;
   imagemBorda = 5;
   mostrarImagem = false;
-  registerForm: FormGroup;
 
   _filtroLista: string = '';
 
@@ -69,6 +71,7 @@ export class EventosComponent implements OnInit {
     this.modoSalvar = 'put';
     this.openModal(template);
     this.evento = evento;
+    evento.imagemURL = '';
     this.registerForm.patchValue(evento);
   }
 
@@ -127,7 +130,7 @@ export class EventosComponent implements OnInit {
       local: ['', [Validators.required, Validators.maxLength(50)]],
       dataEvento: ['', Validators.required],
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-      imagemUrl: ['', Validators.required],
+      imagemURL: ['', Validators.required],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
     });
@@ -145,12 +148,30 @@ export class EventosComponent implements OnInit {
     );
   }
 
+
+  onFileChange(event){
+    const reader = new FileReader();
+
+    if(event.target.files && event.target.files.length){
+      this.file = event.target.files;
+    }
+  }
+
+
+
   //Cadastra os eventos no banco de dados
   //Nesse método é possível
   salvarAlteracao(template: any){
     if(this.registerForm.valid){
       if(this.modoSalvar === 'post'){
         this.evento = Object.assign({}, this.registerForm.value);
+
+        this.eventoService.postUpload(this.file).subscribe();
+
+        const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+        this.evento.imagemURL = nomeArquivo[2];
+
+
         this.eventoService.postEvento(this.evento).subscribe(
           (novoEvento: Evento) => {
             console.log(novoEvento);
@@ -166,6 +187,11 @@ export class EventosComponent implements OnInit {
       else{
         //Altera os eventos no banco de dados
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+
+        this.eventoService.postUpload(this.file).subscribe();
+        const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+        this.evento.imagemURL = nomeArquivo[2];
+
         this.eventoService.putEvento(this.evento).subscribe(
           () => {
             template.hide();
