@@ -30,6 +30,7 @@ export class EventosComponent implements OnInit {
   modoSalvar = 'post';
   file: File;
   registerForm: FormGroup;
+  dataAtual: string;
 
   //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   imagemLargura = 50;
@@ -38,6 +39,7 @@ export class EventosComponent implements OnInit {
   mostrarImagem = false;
 
   _filtroLista: string = '';
+  fileNameToUpdate: string;
 
 
   constructor(
@@ -70,9 +72,11 @@ export class EventosComponent implements OnInit {
   editarEventos(evento: Evento, template: any){
     this.modoSalvar = 'put';
     this.openModal(template);
-    this.evento = evento;
-    evento.imagemURL = '';
-    this.registerForm.patchValue(evento);
+    this.evento =  Object.assign({}, evento); //Copia as informações do evento, não precisando criar uma associação (binding).
+    //Quando você referencia o objeto que foi copiado as informações, a imagem continua sendo carregada ao clicar no botão para alterar, simplesmente porque ele não está criando um binding, mas está referênciando uma cópia do objeto originale mantendo suas informações até que elas sejam editadas
+    this.fileNameToUpdate = evento.imagemURL.toString();
+    this.evento.imagemURL = '';
+    this.registerForm.patchValue(this.evento);
   }
 
   //Método de exlcuir eventos
@@ -80,6 +84,31 @@ export class EventosComponent implements OnInit {
     this.openModal(template);
     this.evento = evento;
     this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}` //Adiciona o valor de string para criar uma mensagem personalizada que aparecerá no modal de deletar evento
+
+  }
+
+  //Método para upload de Imagens
+  uploadImagem(){
+    if(this.modoSalvar === "post"){
+      const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+      this.evento.imagemURL = nomeArquivo[2];
+
+      this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe(
+        () => {
+          this.dataAtual = new Date().getMilliseconds().toString();
+          this.getEventos();
+        }
+      );
+    }
+    else{
+      this.evento.imagemURL = this.fileNameToUpdate;
+      this.eventoService.postUpload(this.file, this.fileNameToUpdate).subscribe(
+        () => {
+          this.dataAtual = new Date().getMilliseconds().toString();
+          this.getEventos();
+        }
+      );
+    }
 
   }
 
@@ -97,13 +126,11 @@ export class EventosComponent implements OnInit {
     )
   }
 
-
   //Abrir modal
   openModal(template: any){
     this.registerForm.reset();
     template.show();
   }
-
 
   ngOnInit() {
     this.validation();
@@ -148,7 +175,6 @@ export class EventosComponent implements OnInit {
     );
   }
 
-
   onFileChange(event){
     const reader = new FileReader();
 
@@ -158,7 +184,6 @@ export class EventosComponent implements OnInit {
   }
 
 
-
   //Cadastra os eventos no banco de dados
   //Nesse método é possível
   salvarAlteracao(template: any){
@@ -166,11 +191,7 @@ export class EventosComponent implements OnInit {
       if(this.modoSalvar === 'post'){
         this.evento = Object.assign({}, this.registerForm.value);
 
-        this.eventoService.postUpload(this.file).subscribe();
-
-        const nomeArquivo = this.evento.imagemURL.split('\\', 3);
-        this.evento.imagemURL = nomeArquivo[2];
-
+        this.uploadImagem();
 
         this.eventoService.postEvento(this.evento).subscribe(
           (novoEvento: Evento) => {
@@ -188,9 +209,7 @@ export class EventosComponent implements OnInit {
         //Altera os eventos no banco de dados
         this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
 
-        this.eventoService.postUpload(this.file).subscribe();
-        const nomeArquivo = this.evento.imagemURL.split('\\', 3);
-        this.evento.imagemURL = nomeArquivo[2];
+        this.uploadImagem();
 
         this.eventoService.putEvento(this.evento).subscribe(
           () => {

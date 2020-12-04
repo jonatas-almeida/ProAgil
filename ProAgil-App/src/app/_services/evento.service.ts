@@ -30,10 +30,10 @@ export class EventoService {
     return this.httpClient.get<Evento>(`${this.baseURL}/${id}`);
   }
 
-  postUpload(file: File){
+  postUpload(file: File, name: string){
     const fileToUpload = <File>file[0];
     const formData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
+    formData.append('file', fileToUpload, name);
 
     return this.httpClient.post(`${this.baseURL}/upload`, formData);
   }
