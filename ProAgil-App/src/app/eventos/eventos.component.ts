@@ -19,7 +19,8 @@ defineLocale('pt-br', ptBrLocale);
 })
 export class EventosComponent implements OnInit {
 
-  //Opções definidas para serem settadas no property binding das imagens no componente de eventos
+  //Variáveis
+  title = "Eventos";
   eventosFiltrados: Evento[];
   dataEvento: Date;
   eventos: Evento[];
@@ -27,6 +28,7 @@ export class EventosComponent implements OnInit {
   bodyDeletarEvento = '';
   modoSalvar = 'post';
 
+  //Opções definidas para serem settadas no property binding das imagens no componente de eventos
   imagemLargura = 50;
   imagemMargem = 2;
   imagemBorda = 5;

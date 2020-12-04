@@ -14,6 +14,7 @@ import { NavComponent } from '../app/nav/nav.component';
 import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContatosComponent } from './contatos/contatos.component';
+import { TituloComponent } from './_shared/titulo/titulo.component';
 //Services
 import { EventoService } from './_services/evento.service';
 //Helpers
@@ -28,6 +29,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
+    TituloComponent,
     EventosComponent,
     NavComponent,
     PalestrantesComponent,
@@ -44,7 +46,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     ModalModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 10000,
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       preventDuplicates: true
     }),
     AppRoutingModule,
