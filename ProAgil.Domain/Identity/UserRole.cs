@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ProAgil.Repository.Identity
+namespace ProAgil.Domain.Identity
 {
     public class UserRole : IdentityUserRole<int>
     {
