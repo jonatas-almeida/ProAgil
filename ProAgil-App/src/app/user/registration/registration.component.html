@@ -9,19 +9,16 @@
       <div class="form-group required">
         <label for="">Nome Completo:</label>
         <input type="text" class="form-control" formControlName="fullName"
-        [ngClass]="{'is-invalid': registerForm.get('fullName').errors &&
-                                  registerForm.get('fullName').touched }"
-          placeholder="Insira o Nome Completo"/>
-        <div *ngIf="registerForm.get('fullName').hasError('required') &&
-                    registerForm.get('fullName').touched"
-          class="invalid-feedback">
+        [ngClass]="{'is-invalid': registerForm.get('fullName').errors && registerForm.get('fullName').touched }" placeholder="Insira o nome completo"/>
+
+        <div *ngIf="registerForm.get('fullName').hasError('required') && registerForm.get('fullName').touched" class="invalid-feedback">
           Nome Completo é obrigatório.
         </div>
       </div>
       <div class="form-group">
         <label for="">E-mail:</label>
         <input class="form-control" type="text" formControlName="email"
-          [ngClass]="{ 'is-invalid': registerForm.get('email').errors && registerForm.get('email').touched}" placeholder="Insira o Nome Completo"/>
+          [ngClass]="{ 'is-invalid': registerForm.get('email').errors && registerForm.get('email').touched}" placeholder="Insira o e-mail"/>
 
         <div *ngIf="registerForm.get('email').hasError('required') && registerForm.get('email').touched" class="invalid-feedback">
           E-mail é obrigatório.
@@ -82,7 +79,7 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group col-md-8 offset-md-2">
+        <div class="form-group col-md-12">
           <button class="btn btn-lg btn-success btn-block" [disabled]="!registerForm.valid" (click)="cadastrarUsuario()">Cadastrar</button>
         </div>
       </div>
