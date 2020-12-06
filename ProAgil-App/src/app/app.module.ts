@@ -15,6 +15,9 @@ import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContatosComponent } from './contatos/contatos.component';
 import { TituloComponent } from './_shared/titulo/titulo.component';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegistrationComponent } from './user/registration/registration.component';
 //Services
 import { EventoService } from './_services/evento.service';
 //Helpers
@@ -26,6 +29,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     PalestrantesComponent,
     DashboardComponent,
     ContatosComponent,
-    DateTimeFormatPipePipe
+    DateTimeFormatPipePipe,
+    UserComponent,
+    LoginComponent,
+    RegistrationComponent
    ],
   imports: [
     BrowserModule,
