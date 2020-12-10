@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../_models/Evento';
@@ -10,7 +10,8 @@ export class EventoService {
 
   baseURL = "http://localhost:5000/api/evento";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
 
   //Usando o Observable no método fica mais fácil de especificar qual informação está sendo puxada via Get (no caso aqui se trata do Evento).
@@ -19,6 +20,7 @@ export class EventoService {
 
   //Método get
   getAllEvento(): Observable<Evento[]>{
+
     return this.httpClient.get<Evento[]>(this.baseURL);
   }
 
